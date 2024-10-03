@@ -9,7 +9,6 @@ ZPK es el inicio de un motor gráfico que permite la creación y manipulación d
 
 - Sistema operativo: Windows, macOS o Linux
 - Lenguaje: C++ (con soporte para CMake)
-- Dependencias: [Listar aquí cualquier dependencia necesaria]
 
 ## Instalación
 
