@@ -14,6 +14,10 @@
 #include <Memory/\TStaticPtr.h>
 #include <Memory/\TUniquePtr.h>
 
+//ImGUI
+#include <imgui.h>
+#include <imgui-SFML.h>
+
 // Enums
 enum 
 ShapeType {
@@ -22,6 +26,13 @@ ShapeType {
     RECTANGLE = 2,
     TRIANGLE = 3
   };
+
+//Enum de tipo de errores
+enum ConsoleErrorType {
+    NORMAL = 0,
+    WARNING = 1,
+    ERROR = 2
+};
 
 // MACRO for safe release of resources
 #define SAFE_PTR_RELEASE(x) if(x != nullptr) { delete x; x = nullptr; }

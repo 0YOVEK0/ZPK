@@ -1,95 +1,99 @@
 ﻿#include "ShapeFactory.h"
 
-sf::Shape*
-ShapeFactory::createShape(ShapeType shapeType) {
+/**
+ * @brief Crea una forma gráfica según el tipo especificado.
+ *
+ * Este método configura la forma (`m_shape`) en función del tipo `ShapeType` proporcionado.
+ * Se crean diferentes tipos de `sf::Shape` como círculo, rectángulo, y triángulo, y cada forma
+ * se inicializa con un color blanco.
+ *
+ * @param shapeType Tipo de forma a crear (e.g., CIRCLE, RECTANGLE, TRIANGLE).
+ * @return Puntero a la forma creada (`sf::Shape*`), o `nullptr` si el tipo es `NONE` o no se reconoce.
+ */
+sf::Shape* ShapeFactory::createShape(ShapeType shapeType) {
     m_shapeType = shapeType;
     switch (shapeType) {
-    case NONE: {
-            return nullptr;
-        }
-    case CIRCLE: {
-            sf::CircleShape* circle = new sf::CircleShape(10.0f);
-            circle->setFillColor(sf::Color::White);
-            m_shape = circle;
-            return circle;
-        }
-    case RECTANGLE: {
-            sf::RectangleShape* rectangle = new sf::RectangleShape(sf::Vector2(100.0f, 50.0f));
-            rectangle->setFillColor(sf::Color::White);
-            m_shape = rectangle;
-            return rectangle;
-        }
-    case TRIANGLE: {
-            sf::CircleShape* triangle = new sf::CircleShape(50.0f, 3);
-            triangle->setFillColor(sf::Color::White);
-            m_shape = triangle;
-            return triangle;
-        }
-    default:
+    case NONE: // No crea ninguna forma
+        return nullptr;
+
+    case CIRCLE: { // Círculo con radio de 10
+        sf::CircleShape* circle = new sf::CircleShape(10.0f);
+        circle->setFillColor(sf::Color::White);
+        m_shape = circle;
+        return circle;
+    }
+
+    case RECTANGLE: { // Rectángulo de tamaño 100x50
+        sf::RectangleShape* rectangle = new sf::RectangleShape(sf::Vector2f(100.0f, 50.0f));
+        rectangle->setFillColor(sf::Color::White);
+        m_shape = rectangle;
+        return rectangle;
+    }
+
+    case TRIANGLE: { // Triángulo (círculo de 3 lados)
+        sf::CircleShape* triangle = new sf::CircleShape(50.0f, 3);
+        triangle->setFillColor(sf::Color::White);
+        m_shape = triangle;
+        return triangle;
+    }
+
+    default: // Tipo de forma no reconocido
         return nullptr;
     }
 }
 
+/**
+ * @brief Establece la posición de la forma.
+ * @param x Coordenada X de la posición.
+ * @param y Coordenada Y de la posición.
+ */
 void
 ShapeFactory::setPosition(float x, float y) {
-    m_shape->setPosition(x, y);
+    if (m_shape) {
+        m_shape->setPosition(x, y);
+    }
 }
 
+/**
+ * @brief Establece la rotación de la forma.
+ * @param angle Ángulo de rotación en grados.
+ */
 void
-ShapeFactory::setPosition(const sf::Vector2f& position) {
-    m_shape->setPosition(position);
+ShapeFactory::setRotation(float angle) {
+    if (m_shape) {
+        m_shape->setRotation(angle);
+    }
 }
 
+/**
+ * @brief Escala la forma en función de un vector de escala.
+ * @param scl Vector de escala (X e Y).
+ */
+void
+ShapeFactory::setScale(const sf::Vector2f& scl) {
+    if (m_shape) {
+        m_shape->setScale(scl);
+    }
+}
+
+/**
+ * @brief Establece el color de relleno de la forma.
+ * @param color Color a aplicar a la forma.
+ */
 void
 ShapeFactory::setFillColor(const sf::Color& color) {
-    m_shape->setFillColor(color);
-}
-
-void
-ShapeFactory::Seek(const sf::Vector2f& targetPosition,
-                   float speed,
-                   float deltaTime,
-                   float range) {
-    // Obtener la posición actual de mi shape
-    sf::Vector2f shapePosition = m_shape->getPosition();
-
-    // Calcular la dirección desde el círculo hacia el objetivo
-    // Nota: Dirección es la pi - pf
-    sf::Vector2f direction = targetPosition - shapePosition;
-
-    // Calcular la distancia al objetivo
-    float lenght = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-
-    // Sí la distancia es mayor que el rango, mover la shape hacia el objetivo
-    if (lenght > range)
-    {
-        direction /= lenght;
-        m_shape->move(direction * speed * deltaTime);
+    if (m_shape) {
+        m_shape->setFillColor(color);
     }
 }
 
-// NUEVO CODIGO DE PRACTICA
+/**
+ * @brief Establece la posición de la forma usando un vector.
+ * @param position Vector que contiene las coordenadas X e Y de la posición.
+ */
 void
-ShapeFactory::MoveTriangle(const std::vector<sf::Vector2f>& points, int& targetIndex, float speed, float deltaTime) {
-    // Obtener la posición actual del triángulo
-    sf::Vector2f currentPos = m_shape->getPosition();
-    
-    // Obtener el objetivo actual
-    sf::Vector2f targetPos = points[targetIndex];
-    
-    // Calcular la dirección desde la posición actual hacia el objetivo
-    sf::Vector2f direction = targetPos - currentPos;
-    
-    // Calcular la distancia al objetivo
-    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-
-    // Si la distancia es mayor que una pequeña distancia
-    if (length > 10.0f) {
-        direction /= length;
-        m_shape->move(direction * speed * deltaTime);
-    }
-    else {
-        // Cambiar al siguiente objetivo en la secuencia
-        targetIndex = (targetIndex + 1) % points.size();
+ShapeFactory::setPosition(const sf::Vector2f& position) {
+    if (m_shape) {
+        m_shape->setPosition(position);
     }
 }
