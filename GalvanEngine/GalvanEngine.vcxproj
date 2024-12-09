@@ -19,7 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GUI.cpp" />
+    <ClCompile Include="UserInterface.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="src\BaseApp.cpp" />
     <ClCompile Include="src\ECS\Actor.cpp" />
     <ClCompile Include="src\ZPK.cpp" />
@@ -28,7 +29,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="GUI.h" />
     <ClInclude Include="include\BaseApp.h" />
     <ClInclude Include="include\ECS\Actor.h" />
     <ClInclude Include="include\ECS\Component.h" />
@@ -39,11 +39,16 @@
     <ClInclude Include="include\Prerequisites.h" />
     <ClInclude Include="include\ShapeFactory.h" />
     <ClInclude Include="include\Window.h" />
-    <ClInclude Include="NotifySingleton.h" />
-    <ClInclude Include="Rasterizer.h" />
+    <ClInclude Include="MathUtilities.h" />
+    <ClInclude Include="NotificationService.h" />
+    <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Transform.h" />
-    <ClInclude Include="Vector.h" />
+    <ClInclude Include="UserInterface.h" />
+    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Vector3.h" />
+    <ClInclude Include="Vector4.h" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="include\ECS\Entity.h" />

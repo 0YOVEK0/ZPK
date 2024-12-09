@@ -1,33 +1,46 @@
 #pragma once
 #include "Prerequisites.h"
 #include "Component.h"
-#include "Actor.h"
 
-class Window;
+class window;
 
 class
     Entity {
 public:
     virtual
-        //Destructor virtual.
         ~Entity() = default;
 
-    //Método virtual puro para actualizar la entidad.
+    /**
+     * @brief Método virtual puro para actualizar la entidad.
+     * @param deltaTime El tiempo transcurrido desde la última actualización.
+     */
     virtual void
         update(float deltaTime) = 0;
 
-    //Método virtual puro para renderizar la entidad.
+    /**
+     * @brief Método virtual puro para renderizar la entidad.
+     * @param Window Contexto del dispositivo para operaciones gráficas.
+     */
     virtual void
         render(Window& window) = 0;
 
-    //Agrega un componente a la entidad.
-    template<typename T>
-    void addComponent(EngineUtilities::TSharedPointer<T> component) {
+    /**
+     * @brief Agrega un componente a la entidad.
+     * @tparam T Tipo del componente, debe derivar de Component.
+     * @param component Puntero compartido al componente que se va a agregar.
+     */
+    template <typename T>
+    void
+        addComponent(EngineUtilities::TSharedPointer <T> component) {
         static_assert(std::is_base_of<Component, T>::value, "T must be derived from Component");
         components.push_back(component.template dynamic_pointer_cast<Component>());
     }
 
-    //Obtiene un componente de la entidad.
+    /**
+     * @brief Obtiene un componente de la entidad.
+     * @tparam T Tipo del componente que se va a obtener.
+     * @return Puntero compartido al componente, o nullptr si no se encuentra.
+     */
     template<typename T>
     EngineUtilities::TSharedPointer<T>
         getComponent() {
@@ -43,5 +56,6 @@ public:
 protected:
     bool isActive;
     int id;
-    std::vector<EngineUtilities::TSharedPointer<Component>> components;
+
+    std::vector<EngineUtilities::TSharedPointer <Component>> components;
 };

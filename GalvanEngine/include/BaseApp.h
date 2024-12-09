@@ -1,95 +1,87 @@
 ﻿#pragma once
-#include "Prerequisites.h"
+#include <SFML/Graphics.hpp>
 #include "Window.h"
+#include "ShapeFactory.h"
 #include "Actor.h"
-#include "GUI.h"
+#include "UserInterface.h"
+#include "Services/NotificationService.h"
+#include "Services/ResourceManager.h"
 
-/**
- * @class BaseApp
- * @brief Clase que representa la aplicación base del motor. Controla el ciclo de vida de la aplicación y maneja los actores.
- */
-class BaseApp {
+class
+	BaseApp {
 public:
-    /**
-     * @brief Constructor por defecto.
-     */
-    BaseApp() = default;
+	/**
+	 * @brief Constructor por defecto
+	 */
+	BaseApp() = default;
 
-    /**
-     * @brief Destructor por defecto.
-     */
-    ~BaseApp() = default;
+	/**
+	 * @brief Destructor de la clase BaseApp
+	 */
+	~BaseApp();
 
-    /**
-     * @brief Ejecuta la aplicación, generalmente llamada en la función `main`.
-     * @return Código de retorno de la aplicación.
-     */
-    int
-        run();
+	/**
+	 * @brief Función encargada de correr la aplicación en el main
+	 * @return Código de salida de la aplicación
+	 */
+	int
+		run();
 
-    /**
-     * @brief Inicializa la aplicación y sus recursos.
-     * @return `true` si la inicialización fue exitosa, `false` en caso contrario.
-     */
-    bool
-        initialize();
+	/**
+	 * @brief Función de inicialización de la aplicación, configura los recursos necesarios
+	 * @return Verdadero si la inicialización fue exitosa, falso si hubo un error
+	 */
+	bool
+		initialize();
 
-    /**
-     * @brief Actualiza el estado de la aplicación en cada frame.
-     */
-    void
-        update();
+	/**
+	 * @brief Función que se actualiza por cada frame, procesando la lógica del juego
+	 */
+	void
+		update();
 
-    /**
-     * @brief Renderiza el contenido de la aplicación.
-     */
-    void
-        render();
+	/**
+	 * @brief Función de renderizado, dibuja los elementos en la ventana
+	 */
+	void
+		render();
 
-    /**
-     * @brief Libera los recursos de la aplicación antes de finalizar.
-     */
-    void
-        cleanup();
+	/**
+	 * @brief Limpia los recursos y elementos de la aplicación antes de salir
+	 */
+	void
+		cleanup();
 
-    /**
-     * @brief Define un patrón de patrullaje para un actor en forma de círculo.
-     *
-     * Esta función mueve al actor a través de una serie de puntos (waypoints) definidos,
-     * simulando un comportamiento de patrullaje.
-     *
-     * @param deltaTime Tiempo transcurrido desde el último frame.
-     * @param circle Puntero compartido al actor que realizará el patrullaje.
-     */
-    void
-        patrolPattern(float deltaTime, EngineUtilities::TSharedPointer<Actor> circle);
-
-    /**
-     * @brief Obtiene la lista de actores en la aplicación.
-     * @return Referencia a un vector de punteros compartidos a los actores.
-     */
-    std::vector<EngineUtilities::TSharedPointer<Actor>>& getActors() { return m_actors; }
-
-    std::vector<EngineUtilities::TSharedPointer<Actor>> m_actors; ///< Vector de actores gestionados por la aplicación.
+	/**
+	 * @brief Actualiza el movimiento de los actores (por ejemplo, el círculo)
+	 * @param deltaTime El tiempo transcurrido entre un frame y el siguiente
+	 * @param circle Puntero compartido al actor que representa el círculo
+	 */
+	void
+		updateMovement(float deltaTime, EngineUtilities::TSharedPointer<Actor> circle);
 
 private:
-    sf::Texture shyGuy; ///< Textura para un personaje o elemento visual específico.
-    sf::Texture texture; ///< Textura genérica para elementos visuales.
-    GUI m_GUI; ///< Interfaz gráfica de usuario de la aplicación.
+	sf::Clock clock;
+	sf::Time deltaTime;
 
-    std::vector<sf::Vector2f> waypoints = { ///< Puntos de patrullaje.
-          sf::Vector2f(290.0f, 460.0f),
-          sf::Vector2f(340.0f, 460.0f),
-          sf::Vector2f(420.0f, 50.0f),
-          sf::Vector2f(100.0f, 80.0f),
-          sf::Vector2f(220.0f, 220.0f),
-          sf::Vector2f(55.0f, 450.0f)
-    };
-    int currentPoint = 0; ///< Índice del punto actual de patrullaje.
+	Window* m_window; // Puntero a la ventana donde se dibujan los elementos
+	                EngineUtilities::TSharedPointer<Actor> Circle;
+	                EngineUtilities::TSharedPointer<Actor> Triangle;
+					EngineUtilities::TSharedPointer<Actor> Square;
+	                EngineUtilities::TSharedPointer<Actor> Track;
 
-    Window* m_window; ///< Puntero a la ventana principal de la aplicación.
-    sf::CircleShape* shape; ///< Forma circular utilizada en la aplicación.
-    EngineUtilities::TSharedPointer<Actor> Triangle; ///< Puntero compartido a un actor en forma de triángulo.
-    EngineUtilities::TSharedPointer<Actor> Circle; ///< Puntero compartido a un actor en forma de círculo.
-    EngineUtilities::TSharedPointer<Actor> Circuit; ///< Puntero compartido a un actor en forma de circuito.
+	// Lista de actores en la escena
+	std::vector< EngineUtilities::TSharedPointer<Actor>> m_actors;
+
+	//Array para la actividad de los puntos
+	Vector2 points[8];
+	int m_currentPoint = 0;
+	int m_currentActor = 0;
+
+	// Texturas para los elementos en escena
+	sf::Texture texture;
+	sf::Texture Rob;
+
+	// Interfaz gráfica de usuario
+	UserInterface m_GUI;
 };

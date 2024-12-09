@@ -1,12 +1,88 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\GITHUB\\ZPK\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{69889642-FC58-400B-AF56-D1ED4C07A7B6}|GalvanEngine\\GalvanEngine.vcxproj|D:\\GITHUB\\ZPK\\GalvanEngine\\UserInterface.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{69889642-FC58-400B-AF56-D1ED4C07A7B6}|GalvanEngine\\GalvanEngine.vcxproj|solutionrelative:GalvanEngine\\UserInterface.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69889642-FC58-400B-AF56-D1ED4C07A7B6}|GalvanEngine\\GalvanEngine.vcxproj|D:\\GITHUB\\ZPK\\GalvanEngine\\src\\Window.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{69889642-FC58-400B-AF56-D1ED4C07A7B6}|GalvanEngine\\GalvanEngine.vcxproj|solutionrelative:GalvanEngine\\src\\Window.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69889642-FC58-400B-AF56-D1ED4C07A7B6}|GalvanEngine\\GalvanEngine.vcxproj|D:\\GITHUB\\ZPK\\GalvanEngine\\src\\BaseApp.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{69889642-FC58-400B-AF56-D1ED4C07A7B6}|GalvanEngine\\GalvanEngine.vcxproj|solutionrelative:GalvanEngine\\src\\BaseApp.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69889642-FC58-400B-AF56-D1ED4C07A7B6}|GalvanEngine\\GalvanEngine.vcxproj|D:\\GITHUB\\ZPK\\GalvanEngine\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{69889642-FC58-400B-AF56-D1ED4C07A7B6}|GalvanEngine\\GalvanEngine.vcxproj|solutionrelative:GalvanEngine\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Window.cpp",
+              "DocumentMoniker": "D:\\GITHUB\\ZPK\\GalvanEngine\\src\\Window.cpp",
+              "RelativeDocumentMoniker": "GalvanEngine\\src\\Window.cpp",
+              "ToolTip": "D:\\GITHUB\\ZPK\\GalvanEngine\\src\\Window.cpp",
+              "RelativeToolTip": "GalvanEngine\\src\\Window.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAK0AAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-09T22:59:50.227Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserInterface.cpp",
+              "DocumentMoniker": "D:\\GITHUB\\ZPK\\GalvanEngine\\UserInterface.cpp",
+              "RelativeDocumentMoniker": "GalvanEngine\\UserInterface.cpp",
+              "ToolTip": "D:\\GITHUB\\ZPK\\GalvanEngine\\UserInterface.cpp",
+              "RelativeToolTip": "GalvanEngine\\UserInterface.cpp",
+              "ViewState": "AQIAAHsAAAAAAAAAAAAAAF8AAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-09T22:45:04.156Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "main.cpp",
+              "DocumentMoniker": "D:\\GITHUB\\ZPK\\GalvanEngine\\main.cpp",
+              "RelativeDocumentMoniker": "GalvanEngine\\main.cpp",
+              "ToolTip": "D:\\GITHUB\\ZPK\\GalvanEngine\\main.cpp",
+              "RelativeToolTip": "GalvanEngine\\main.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-09T22:43:35.902Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BaseApp.cpp",
+              "DocumentMoniker": "D:\\GITHUB\\ZPK\\GalvanEngine\\src\\BaseApp.cpp",
+              "RelativeDocumentMoniker": "GalvanEngine\\src\\BaseApp.cpp",
+              "ToolTip": "D:\\GITHUB\\ZPK\\GalvanEngine\\src\\BaseApp.cpp",
+              "RelativeToolTip": "GalvanEngine\\src\\BaseApp.cpp",
+              "ViewState": "AQIAAF0AAAAAAAAAAAAAAHoAAAAlAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-09T22:25:27.058Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

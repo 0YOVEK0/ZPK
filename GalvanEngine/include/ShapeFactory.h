@@ -1,105 +1,93 @@
 ﻿#pragma once
 #include "Prerequisites.h"
-#include "Component.h"
-#include "Window.h"
 
-/**
- * @class ShapeFactory
- * @brief Componente responsable de crear y gestionar una forma gráfica en la aplicación.
- *
- * La clase `ShapeFactory` permite crear diferentes tipos de formas (como círculos, rectángulos, etc.)
- * y aplicarles transformaciones como posición, rotación, y escala. Hereda de `Component`.
- */
-class ShapeFactory : public Component {
+class
+	Window {
 public:
-    /**
-     * @brief Constructor por defecto.
-     */
-    ShapeFactory() = default;
+	Window() = default;
+	Window(int width, int height, const std::string& title);
+	~Window();
 
-    /**
-     * @brief Destructor virtual por defecto.
-     */
-    virtual
-        ~ShapeFactory() = default;
+	/**
+	 * @brief Procesa los eventos de la ventana y actualiza el estado de esta.
+	 */
+	void
+		handleEvents();
 
-    /**
-     * @brief Constructor que inicializa el `ShapeFactory` con un tipo de forma.
-     * @param shapeType Tipo de forma inicial.
-     */
-    ShapeFactory(ShapeType shapeType) : m_shape(nullptr), 
-                                        m_shapeType(ShapeType::NONE),
-                                        Component(ComponentType::SHAPE) {}
+	/**
+	 * @brief Limpia el contenido de la ventana con el color predeterminado.
+	 */
+	void
+		clear();
 
-    /**
-     * @brief Crea una forma específica según el tipo indicado.
-     * @param shapeType Tipo de forma a crear.
-     * @return Puntero a la forma creada.
-     */
-    sf::Shape* createShape(ShapeType shapeType);
+	/**
+	 * @brief Muestra el contenido de la ventana en la pantalla.
+	 */
+	void
+		display();
 
-    /**
-     * @brief Actualiza el estado del componente de forma.
-     *
-     * @param deltaTime Tiempo transcurrido desde la última actualización (no implementado en este caso).
-     */
-    void
-        update(float deltaTime) override {}
+	/**
+	 * @brief Verifica si la ventana sigue abierta.
+	 * @return true si la ventana está abierta, false en caso contrario.
+	 */
+	bool
+		isOpen() const;
 
-    /**
-     * @brief Establece la posición de la forma.
-     * @param x Posición en el eje X.
-     * @param y Posición en el eje Y.
-     */
-    void
-        setPosition(float x, float y);
+	/**
+	 * @brief Dibuja un objeto sf::Drawable en la ventana.
+	 * @param drawable El objeto a dibujar en la ventana.
+	 */
+	void
+		draw(const sf::Drawable& drawable);
 
-    /**
-     * @brief Establece la rotación de la forma.
-     * @param angle Ángulo de rotación en grados.
-     */
-    void
-        setRotation(float angle);
+	/**
+	 * @brief Obtiene el objeto interno SFML RenderWindow.
+	 * @return Un puntero al objeto interno SFML RenderWindow.
+	 */
+	sf::RenderWindow*
+		getWindow();
 
-    /**
-     * @brief Escala la forma en base a un vector de escala.
-     * @param scl Vector de escala.
-     */
-    void
-        setScale(const sf::Vector2f& scl);
+	/**
+	 * @brief Inicializa la ventana.
+	 */
+	void
+		init();
 
-    /**
-     * @brief Cambia el color de relleno de la forma.
-     * @param color Color a aplicar a la forma.
-     */
-    void
-        setFillColor(const sf::Color& color);
+	/**
+	 * @brief Actualiza la ventana por cada frame.
+	 */
+	void
+		update();
 
-    /**
-     * @brief Establece la posición de la forma mediante un vector de posición.
-     * @param position Vector que indica la posición.
-     */
-    void
-        setPosition(const sf::Vector2f& position);
+	/**
+	 * @brief Realiza el renderizado de la ventana.
+	 */
+	void
+		render();
 
-    /**
-     * @brief Renderiza la forma en la ventana proporcionada.
-     *
-     * @param window Objeto `Window` donde se renderiza la forma (no implementado en este caso).
-     */
-    void
-        render(Window window) override {}
+	/**
+	 * @brief Destruye la ventana y libera sus recursos.
+	 */
+	void
+		destroy();
 
-    /**
-     * @brief Obtiene la forma creada.
-     * @return Puntero a la forma actual (`sf::Shape*`).
-     */
-    sf::Shape* getShape() {
-        return m_shape;
-    }
+	/**
+	 * @brief Permite renderizar los objetos gráficos a una textura.
+	 */
+	void
+		renderToTexture();
+
+	/**
+	 * @brief Muestra el contenido de la ventana en ImGui.
+	 */
+	void
+		showInImGui();
 
 private:
-    ShapeType m_shapeType; ///< Tipo de la forma actual.
+	sf::RenderWindow* m_window;
+	sf::View m_view;
 public:
-    sf::Shape* m_shape; ///< Puntero a la forma creada.
+	sf::RenderTexture m_renderTexture; 
+	sf::Time deltaTime;
+	sf::Clock clock;
 };

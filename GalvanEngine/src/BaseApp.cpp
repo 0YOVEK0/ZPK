@@ -1,21 +1,26 @@
 ﻿#include "BaseApp.h"
-#include "NotifySingleton.h"
 
-// Inicializa la instancia estática del singleton NotifySingleton
-NotifySingleton* NotifySingleton::m_instance = nullptr;
+BaseApp::~BaseApp()
+{
+    NotificationService::getInstance().saveMessagesToFile("Data.txt");
+}
 
-
-int
-BaseApp::run() {
-    NotifySingleton* noty = NotifySingleton::getInstance();
+int BaseApp::run() {
+    NotificationService& notifier = NotificationService::getInstance();
 
     if (!initialize()) {
-        noty->addMessage(ConsoleErrorType::ERROR, "Initializes result on a false statement, check method validations");
+        notifier.addMessage(ConsolErrorType::ERROR, "Initializes result on a false statemente, check method validations");
+        notifier.saveMessagesToFile("Data.txt");
+        ERROR("BaseApp", "run", "Initializes result on a false statemente, check method validations");
+    }
+    else {
+        notifier.addMessage(ConsolErrorType::NORMAL, "All programs were initialized correctly");
     }
     m_GUI.init();
 
     while (m_window->isOpen()) {
         m_window->handleEvents();
+        deltaTime = clock.restart();
         update();
         render();
     }
@@ -24,176 +29,160 @@ BaseApp::run() {
     return 0;
 }
 
-/**
- * @brief Inicializa los recursos de la aplicación, incluidos la ventana y los actores.
- *
- * Configura la ventana y crea instancias de actores `Circuit`, `Circle`, y `Triangle`.
- *
- * @return `true` si la inicialización fue exitosa, `false` en caso de error.
- */
-bool
-BaseApp::initialize() {
-    NotifySingleton* noty = NotifySingleton::getInstance();
+bool BaseApp::initialize() {
+    NotificationService& notifier = NotificationService::getInstance();
+    ResourceManager& resourceManager = ResourceManager::getInstance();
 
-    // Configura la ventana principal
-    m_window = new Window(1920, 1080, "Charreton Engine OG");
+    m_window = new Window(1280, 720, "ZPK");
     if (!m_window) {
-        noty->addMessage(ConsoleErrorType::ERROR, "initialize, Error on window creation, var is null");
+        notifier.addMessage(ConsolErrorType::ERROR, "Error on window creation, pointer is null");
+        ERROR("BaseApp", "initialize", "Error on window creation, var is null");
         return false;
     }
 
-    shape = new sf::CircleShape(10.0f);
-    if (!shape) {
-        noty->addMessage(ConsoleErrorType::ERROR, "initialize, Error on shape creation, var is null");
-        return false;
+    // Points for movement
+    points[0] = Vector2(25.0f, 560.0f);  // Esquina superior izquierda
+    points[1] = Vector2(25.0f, 20.0f);   // Esquina inferior izquierda
+    points[2] = Vector2(700.0f, 20.0f);  // Esquina inferior derecha
+    points[3] = Vector2(700.0f, 560.0f); // Esquina superior derecha
+    
+
+    // Initialize Track Actor
+    Track = EngineUtilities::MakeShared<Actor>("Track");
+    if (!Track.isNull()) {
+        Track->getComponent<ShapeFactory>()->createShape(ShapeType::RECTANGLE);
+        Track->getComponent<Transform>()->setTransform(Vector2(0.0f, 0.0f), Vector2(0.0f, 0.0f), Vector2(40.0f, 60.0f));
+
+        // Load texture for Track
+        if (!resourceManager.loadTexture("Map002", "png")) {
+            notifier.addMessage(ConsolErrorType::ERROR, "Can't load texture: Circuit");
+        }
+
+        EngineUtilities::TSharedPointer<Texture> trackTexture = resourceManager.getTexture("Map002");
+        if (trackTexture) {
+            Track->getComponent<ShapeFactory>()->getShape()->setTexture(&trackTexture->getTexture());
+        }
+
+        m_actors.push_back(Track);
     }
 
-    // Inicializa el actor Circuit
-    Circuit = EngineUtilities::MakeShared<Actor>("Circuit");
-    if (!Circuit.isNull()) {
-        noty->addMessage(ConsoleErrorType::NORMAL, "Actor Circuit created");
-        Circuit->getComponent<ShapeFactory>()->createShape(ShapeType::RECTANGLE);
-        Circuit->getComponent<Transform>()->setPosition(sf::Vector2f(10, 10.0f));
-        Circuit->getComponent<Transform>()->setRotation(sf::Vector2f(0.0f, 0.0f));
-        Circuit->getComponent<Transform>()->setScale(sf::Vector2f(5.0f, 10.0f));
-
-        m_actors.push_back(Circuit);
-
-        if (!texture.loadFromFile("Circuit.png")) {
-            noty->addMessage(ConsoleErrorType::WARNING, "Esa textura no existe circuit");
-        }
-        else {
-            noty->addMessage(ConsoleErrorType::NORMAL, "Loaded Texture ");
-        }
-        Circuit->getComponent<ShapeFactory>()->getShape()->setTexture(&texture);
-    }
-
-    // Inicializa el actor Circle
-    Circle = EngineUtilities::MakeShared<Actor>("Circle");
+    // Initialize Circle Actor (Player)
+    Circle = EngineUtilities::MakeShared<Actor>("Player");
     if (!Circle.isNull()) {
-        noty->addMessage(ConsoleErrorType::NORMAL, "Actor Circle created");
         Circle->getComponent<ShapeFactory>()->createShape(ShapeType::CIRCLE);
-        Circle->getComponent<Transform>()->setPosition(sf::Vector2f(280.0f, 460.0f));
-        Circle->getComponent<Transform>()->setRotation(sf::Vector2f(0.0f, 0.0f));
-        Circle->getComponent<Transform>()->setScale(sf::Vector2f(1.0f, 1.0f));
+        Circle->getComponent<Transform>()->setTransform(Vector2(650.0f, 560.0f), Vector2(0.0f, 0.0f), Vector2(1.0f, 1.0f));
+
+        // Load texture for Player
+        if (!resourceManager.loadTexture("Playa2", "png")) {
+            notifier.addMessage(ConsolErrorType::ERROR, "Can't load texture: Rob");
+        }
+
+        EngineUtilities::TSharedPointer<Texture> playerTexture = resourceManager.getTexture("Playa2");
+        if (playerTexture) {
+            Circle->getComponent<ShapeFactory>()->getShape()->setTexture(&playerTexture->getTexture());
+        }
 
         m_actors.push_back(Circle);
-
-        if (!shyGuy.loadFromFile("sprites/Image12.png")) {
-            noty->addMessage(ConsoleErrorType::WARNING, "Esa textura no existe circle");
-        }
-        else {
-            noty->addMessage(ConsoleErrorType::NORMAL, "Loaded Texture Circle");
-        }
-        Circle->getComponent<ShapeFactory>()->getShape()->setTexture(&shyGuy);
     }
 
-    // Inicializa el actor Triangle
+    // Initialize Triangle Actor
     Triangle = EngineUtilities::MakeShared<Actor>("Triangle");
     if (!Triangle.isNull()) {
         Triangle->getComponent<ShapeFactory>()->createShape(ShapeType::TRIANGLE);
+        Triangle->getComponent<Transform>()->setTransform(Vector2(150.0f, 200.0f), Vector2(0.0f, 0.0f), Vector2(1.0f, 1.0f));
+
+        // Load texture for Triangle
+        if (!resourceManager.loadTexture("jaua23", "png")) {
+            notifier.addMessage(ConsolErrorType::ERROR, "Can't load texture: jaua23");
+        }
+
+        EngineUtilities::TSharedPointer<Texture> triangleTexture = resourceManager.getTexture("jaua23");
+        if (triangleTexture) {
+            Triangle->getComponent<ShapeFactory>()->getShape()->setTexture(&triangleTexture->getTexture());
+        }
+
+        m_actors.push_back(Triangle);
+    }
+
+    // NEW: Adding a Square Actor
+    Square = EngineUtilities::MakeShared<Actor>("Square");
+    if (!Square.isNull()) {
+        Square->getComponent<ShapeFactory>()->createShape(ShapeType::RECTANGLE);
+        Square->getComponent<Transform>()->setTransform(Vector2(300.0f, 300.0f), Vector2(0.0f, 0.0f), Vector2(1.0f, 1.0f));
+
+        // Load texture for Square
+        if (!resourceManager.loadTexture("SquareTexture", "png")) {
+            notifier.addMessage(ConsolErrorType::ERROR, "Can't load texture: SquareTexture");
+        }
+
+        EngineUtilities::TSharedPointer<Texture> squareTexture = resourceManager.getTexture("SquareTexture");
+        if (squareTexture) {
+            Square->getComponent<ShapeFactory>()->getShape()->setTexture(&squareTexture->getTexture());
+        }
+
+        m_actors.push_back(Square);  
     }
 
     return true;
 }
 
-/**
- * @brief Actualiza el estado de la aplicación en cada frame.
- *
- * Llama a la actualización de la ventana, los actores, y ejecuta el patrón de patrullaje en el actor `Circle`.
- */
-void
-BaseApp::update() {
+void BaseApp::update() {
     m_window->update();
 
     for (auto& actor : m_actors) {
         if (!actor.isNull()) {
             actor->update(m_window->deltaTime.asSeconds());
+            if (actor->getName() == "Player") {
+                updateMovement(m_window->deltaTime.asSeconds(), actor);
+            }
         }
-    }
-
-    if (!Circuit.isNull()) {
-        Circuit->update(m_window->deltaTime.asSeconds());
-    }
-
-    if (!Circle.isNull()) {
-        Circle->update(m_window->deltaTime.asSeconds());
-        patrolPattern(m_window->deltaTime.asSeconds(), Circle);
     }
 }
 
-/**
- * @brief Renderiza los elementos de la aplicación en la ventana.
- *
- * Limpia la ventana, dibuja los actores y muestra la GUI con la jerarquía de actores y mensajes de consola.
- */
-void
-BaseApp::render() {
-    NotifySingleton* noty = NotifySingleton::getInstance();
+void BaseApp::render() {
+    NotificationService& notifier = NotificationService::getInstance();
 
     m_window->clear();
-    m_window->draw(*shape);
-
-    if (!Triangle.isNull()) {
-        Triangle->render(*m_window);
-    }
-    if (!Circuit.isNull()) {
-        Circuit->render(*m_window);
-    }
-    if (!Circle.isNull()) {
-        Circle->render(*m_window);
-    }
-
-    for (const auto& actor : m_actors) {
+    for (auto& actor : m_actors) {
         if (!actor.isNull()) {
             actor->render(*m_window);
         }
     }
 
-    m_window->renderToTexture();
-    m_window->showInImGui();
-    m_GUI.console(noty->showNotification());
-    m_GUI.hierarchy(m_actors);
-    m_GUI.actor(m_actors);
+    m_window->renderToTexture();  // Finalizes rendering to texture
+    m_window->showInImGui();      // Displays texture in ImGui
+
+    m_GUI.console(notifier.getNotifications());  // Shows the console messages
+    m_GUI.inspector();  // Shows the inspector for debugging
+    m_GUI.hierarchy(m_actors);  // Shows the hierarchy of actors
+
     m_window->render();
     m_window->display();
 }
 
-
-void
-BaseApp::cleanup() {
-         m_window->destroy();
-         delete m_window;
+void BaseApp::cleanup() {
+    m_window->destroy();
+    delete m_window;
 }
 
-/**
- * @brief Ejecuta un patrón de patrullaje para el actor proporcionado.
- *
- * Este método mueve el actor `circulo` entre una serie de puntos (`waypoints`) en secuencia,
- * simulando un comportamiento de patrullaje.
- *
- * @param deltaTime Tiempo transcurrido desde el último frame.
- * @param circulo Puntero al actor que realiza el patrullaje.
- */
-void
-BaseApp::patrolPattern(float deltaTime, EngineUtilities::TSharedPointer<Actor> circulo) {
-    if (!circulo || circulo.isNull()) {
-        return;
-    }
+void BaseApp::updateMovement(float deltaTime, EngineUtilities::TSharedPointer<Actor> circle) {
+    if (!circle || circle.isNull()) return;
 
-    auto transform = circulo->getComponent<Transform>();
-    if (transform.isNull()) {
-        return;
-    }
+    auto transform = circle->getComponent<Transform>();
+    if (transform.isNull()) return;
 
-    sf::Vector2f targetPos = waypoints[currentPoint];
+    Vector2 targetPos = points[m_currentPoint];
+
     transform->Seek(targetPos, 200.0f, deltaTime, 10.0f);
 
-    sf::Vector2f currentPos = transform->getPosition();
+    Vector2 currentPos = transform->getPosition();
+
     float distanceToTarget = std::sqrt(std::pow(targetPos.x - currentPos.x, 2) + std::pow(targetPos.y - currentPos.y, 2));
 
     if (distanceToTarget < 10.0f) {
-        currentPoint = (currentPoint + 1) % waypoints.size();
+        m_currentPoint = (m_currentPoint + 1);
+        if (m_currentPoint > 8) {
+            m_currentPoint = 0;
+        }
     }
 }
-

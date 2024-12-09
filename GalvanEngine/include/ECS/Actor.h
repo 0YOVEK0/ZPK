@@ -4,64 +4,75 @@
 #include "ShapeFactory.h"
 #include "Transform.h"
 
-/**
- * @class Actor
- * @brief Representa un actor en la escena, hereda de la clase Entity y contiene componentes como ShapeFactory y Transform.
- */
-class Actor : Entity {
+class
+    Actor : Entity {
 public:
-    /**
-     * @brief Constructor por defecto.
-     */
     Actor() = default;
 
-   
+    /*
+    * @brief Constructor con parámetro del nombre del actor
+    */
     Actor(std::string actorName);
 
-    /**
-     * @brief Destructor virtual de Actor.
-     */
+    /*
+    * @brief Destructor virtual por defecto
+    */
     virtual
         ~Actor() = default;
 
-    
+    /*
+    * @brief Actualiza al actor
+    * @param deltaTime El tiempo transcurrrido desde la última actualización
+    */
     void
         update(float deltaTime) override;
 
-    /**
-     * @brief Renderiza el actor en el contexto de la ventana.
-     * @param window Referencia a la ventana donde se realizan las operaciones gráficas.
-     */
+    /*
+    * @brief Renderiza al actor
+    * @param window Contexto del dispositivo para operaciones gráficas
+    */
     void
         render(Window& window) override;
 
     /**
-     *  Destruye el actor y libera los recursos asociados.
+     * @brief Destruye el actor y libera los recursos asociados.
      */
     void
         destroy();
 
     /**
-     *  Obtiene un componente específico del actor, basado en el tipo T.
-     *
-     * Esta función utiliza el tipo de dato especificado como parámetro para buscar
-     * entre los componentes del actor y devolver el componente solicitado, si existe.
-     *
-     * @tparam T Tipo del componente que se desea obtener.
-     * @return EngineUtilities::TSharedPointer<T> Puntero compartido al componente, o un TSharedPointer vacío si no se encuentra.
+     * @brief Función para obtener únicamente el nombre del actor
      */
-    template <typename T>
-    EngineUtilities::TSharedPointer<T> getComponent();
+    std::string
+        getName() const;
 
-    std::string m_name = "Actor"; ///< Nombre del actor.
+    /**
+     * @brief Permite la modificación del nombre del actor
+     */
+    void
+        setName(const std::string& newName);
+
+    /*
+    * @brief Obtiene un componente específico del actor
+    * @tparam T Tipo de componente que se va a obtener
+    * @return Puntero compartido al componente, o nullptr si no se encuentra
+    */
+    template <typename T>
+    EngineUtilities::TSharedPointer<T>
+        getComponent();
 
 private:
-    
+    std::string m_name = "Actor";
 };
 
-
+/*
+  * El propósito de esta función es buscar y devolver yn componente específico de un
+  * actor utilizando el tipo de componente específico como argumentos de la plantilla.
+  * Si el componente no se encuentra, la función devuelve nullptr.
+  */
 template<typename T>
-inline EngineUtilities::TSharedPointer<T> Actor::getComponent() {
+inline EngineUtilities::TSharedPointer<T>
+Actor::getComponent() {
     for (auto& component : components) {
         EngineUtilities::TSharedPointer<T> specificComponent = component.template dynamic_pointer_cast<T>();
         if (specificComponent) {

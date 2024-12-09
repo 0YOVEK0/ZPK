@@ -22,6 +22,12 @@
     <Filter Include="Archivos de origen\ECS">
       <UniqueIdentifier>{d5a201b8-269b-4d33-8db9-652ecb700aa3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de encabezado\Services">
+      <UniqueIdentifier>{92d6215d-d984-490c-b7c0-b1f44a1b8a96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\Vectors">
+      <UniqueIdentifier>{7910d57c-c4ba-41ec-8ddb-1db7adff02fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ZPK.cpp">
@@ -39,7 +45,10 @@
     <ClCompile Include="src\ECS\Actor.cpp">
       <Filter>Archivos de origen\ECS</Filter>
     </ClCompile>
-    <ClCompile Include="GUI.cpp">
+    <ClCompile Include="UserInterface.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,22 +86,34 @@
     <ClInclude Include="include\Memory\TWeakPointer.h">
       <Filter>Archivos de encabezado\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="GUI.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="NotifySingleton.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Rasterizer.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Vector.h">
+    <ClInclude Include="NotificationService.h">
+      <Filter>Archivos de encabezado\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Archivos de encabezado\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>Archivos de encabezado\Vectors</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>Archivos de encabezado\Vectors</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector4.h">
+      <Filter>Archivos de encabezado\Vectors</Filter>
+    </ClInclude>
+    <ClInclude Include="Quaternion.h">
+      <Filter>Archivos de encabezado\Vectors</Filter>
+    </ClInclude>
+    <ClInclude Include="MathUtilities.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="UserInterface.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
