@@ -2,6 +2,8 @@
 
 ZPK es el inicio de un motor gráfico diseñado para la creación y manipulación de figuras a través de actores. Este proyecto incorpora tecnologías modernas como **SFML 2.6.1**, un **Entity Component System (ECS)** para una arquitectura modular y escalable, y una interfaz de usuario interactiva basada en **IMGUI**, ofreciendo herramientas robustas para el desarrollo gráfico. Además, el motor cuenta con un **servicio de notificación de errores** para facilitar la depuración y mejorar la experiencia de desarrollo.
 
+**Documentación del código realizada con la ayuda de ChatGPT.**
+
 ## Requisitos
 
 - **Sistema Operativo**: Windows, macOS o Linux  
